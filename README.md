@@ -1,1 +1,1 @@
-# Composer-Creative-and-Controllable-Image-Synthesis-with-Composable-Conditions-pytorch
+# Composer-Creative-and-Controllable-Image-Synthesis-with-Composable-Conditions-Pytorch (wip)
