@@ -21,3 +21,14 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
   year={2023}
 }
 ```
+
+```bibtex
+@misc{zhang2023adding,
+  title={Adding Conditional Control to Text-to-Image Diffusion Models}, 
+  author={Lvmin Zhang and Maneesh Agrawala},
+  year={2023},
+  eprint={2302.05543},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+}
+```
