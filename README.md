@@ -6,6 +6,7 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
 ## TODO
 
 - [ ] Implement color palette decomposition.
+- [ ] Reimplement the DDIM sampling code.
 - [ ] Release inference code.
 - [ ] Release pretrained models.
 
