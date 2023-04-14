@@ -14,11 +14,18 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
 ## Install
 ```bash
 $ git clone https://github.com/aartykov/Latent-Composer-pytorch.git 
-$ cd LatentComposer
 $ conda env create -f environment.yaml
 $ conda activate latent-composer
 ```
 
+
+## Usage
+```bash
+# Train 
+$ cd LatentComposer
+$ CUDA_VISIBLE_DEVICES=0 python main.py config/composer.yaml -t --gpus 0, 
+
+```
 
 
 ## Implementation Notes
