@@ -10,6 +10,17 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
 - [ ] Release inference code.
 - [ ] Release pretrained models.
 
+
+## Install
+```bash
+$ git clone https://github.com/aartykov/Latent-Composer-pytorch.git 
+$ cd LatentComposer
+$ conda env create -f environment.yaml
+$ conda activate latent-composer
+```
+
+
+
 ## Implementation Notes
 I implemented the DDIM function(eq. 3 in the paper) as below. Since this part is not clear to me, I am not totally sure, if this is the right implementation or not. So I would appreaciate if someone give a hint for this point.
 
