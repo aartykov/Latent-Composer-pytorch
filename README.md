@@ -16,6 +16,7 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
 $ git clone https://github.com/aartykov/Latent-Composer-pytorch.git 
 $ conda env create -f environment.yaml
 $ conda activate latent-composer
+Download stable diffusion v1.5 checkpoints from https://huggingface.co/runwayml/stable-diffusion-v1-5 and put it inside the models directory.
 ```
 
 
