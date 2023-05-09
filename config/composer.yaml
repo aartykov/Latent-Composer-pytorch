@@ -1,0 +1,151 @@
+model:
+  base_learning_rate: 1.0e-04
+  target: ldm.models.diffusion.ddpm.LatentDiffusion
+  params:
+    linear_start: 0.00085
+    linear_end: 0.0120
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    first_stage_key: "input_image" #"jpg"
+    cond_txt_key: "txt"
+    cond_img_key: "img"
+    cond_locals_key: "locals"
+    local_conditionings: [depth, edge]
+    null_cond_prob: 0.5
+    image_size: 64
+    channels: 4
+    monitor: val/loss_simple_ema
+    scale_factor: 0.18215
+    load_only_unet: True
+    ckpt_path: /LatentComposer/models/v1-5-pruned.ckpt #v2-1_512-nonema-pruned.ckpt # SD v2.1 checkpoint
+    
+
+    scheduler_config: # 10000 warmup steps
+      target: ldm.lr_scheduler.LambdaLinearScheduler
+      params:
+        warm_up_steps: [ 1000 ]
+        cycle_lengths: [ 10000000000000 ] # incredibly large number to prevent corner cases
+        f_start: [ 1.e-6 ]
+        f_max: [ 1. ]
+        f_min: [ 1. ]
+
+    unet_config:
+      target: ldm.modules.diffusionmodules.openaimodel.UNetModel
+      params:
+        image_size: 32 # unused
+        in_channels: 7 # 4
+        out_channels: 4
+        model_channels: 320
+        attention_resolutions: [ 4, 2, 1 ]
+        num_res_blocks: 2
+        channel_mult: [ 1, 2, 4, 4 ]
+        num_heads: 8
+        use_spatial_transformer: True
+        transformer_depth: 1
+        context_dim: 512   # Gramme encoder output vector dimension
+        use_checkpoint: True
+        legacy: False
+
+    first_stage_config:
+      target: ldm.models.autoencoder.AutoencoderKL
+      trainable: false  
+      params:
+        embed_dim: 4
+        monitor: val/rec_loss
+        ckpt_path: /LatentComposer/models/first_stage_models/kl-f8/model.ckpt
+        ddconfig:
+          double_z: true
+          z_channels: 4
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult:
+          - 1
+          - 2
+          - 4
+          - 4
+          num_res_blocks: 2
+          attn_resolutions: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+
+    txt_config:
+      target: ldm.modules.encoders.modules.FrozenCLIPEmbedderWithProjection
+      trainable: false
+      #params:
+      #  device: "cpu" # Because it is frozen
+        
+
+    img_config:
+      target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder
+      trainable: false
+      
+    
+    local_config:
+      target: ldm.modules.encoders.modules.SpatialRescaler
+      trainable: false
+      params:
+        n_stages: 3
+        in_channels: 3
+        #out_channels: 1
+        
+        
+        
+        
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 8
+    num_workers: 16
+    wrap: false
+    train:
+      target: ldm.data.custom_dataset.CustomDatasetTrain
+      params:
+        data_root: "/radiate_dataset/city_1_0/zed_left/"
+        height: 512 
+        width: 512
+        interpolation: "linear"
+        
+        
+    validation:
+      target: ldm.data.custom_dataset.CustomDatasetValidation
+      params:
+        data_root: "/radiate_dataset/city_1_1/zed_left/"
+        height: 512
+        width: 512 
+        interpolation: "linear"
+        
+        
+
+
+
+lightning:
+  find_unused_parameters: true # NOTE: Not sure about making it true ...
+  modelcheckpoint:
+    params:
+      every_n_train_steps: 5000
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 1000
+        max_images: 8
+        increase_log_steps: False
+        log_first_step: True
+        log_images_kwargs:
+          use_ema_scope: False
+          inpaint: False
+          plot_progressive_rows: False
+          plot_diffusion_rows: False
+          N: 8
+          guidance_scale: 1.0 # mentioned as w in the paper.
+          unconditional_guidance_label: [""]
+
+  trainer:
+    benchmark: True
+    val_check_interval: 1.0 #5000000 # really sorry
+    num_sanity_val_steps: 0
+    accumulate_grad_batches: 1
