@@ -22,7 +22,7 @@ $ conda activate latent-composer
 ## Usage
 ```bash
 # Train 
-$ cd LatentComposer
+$ cd Latent-Composer-pytorch
 $ CUDA_VISIBLE_DEVICES=0 python main.py config/composer.yaml -t --gpus 0, 
 
 ```
