@@ -16,7 +16,10 @@ Implementation of a light-weighted Latent-Composer in PyTorch based on "Composer
 $ git clone https://github.com/aartykov/Latent-Composer-pytorch.git 
 $ conda env create -f environment.yaml
 $ conda activate latent-composer
-Download stable diffusion v1.5 checkpoints from https://huggingface.co/runwayml/stable-diffusion-v1-5 and put it inside the models directory.
+
+- Download stable diffusion v1.5 checkpoints from https://huggingface.co/runwayml/stable-diffusion-v1-5 and put it inside the /models directory.
+- Download MiDAS checkpoints from https://github.com/isl-org/MiDaS/releases/download/v3_1/dpt_beit_large_512.pt and put it inside the /annotators/ckpts directory.
+- Download quantized VAE autoencoder checkpoints from https://ommer-lab.com/files/latent-diffusion/vq-f8-n256.zip and put it inside the /models/first_stage_models/kl-f8 directory.
 ```
 
 
