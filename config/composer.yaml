@@ -18,7 +18,7 @@ model:
     monitor: val/loss_simple_ema
     scale_factor: 0.18215
     load_only_unet: True
-    ckpt_path: /LatentComposer/models/v1-5-pruned.ckpt #v2-1_512-nonema-pruned.ckpt # SD v2.1 checkpoint
+    ckpt_path: /Latent-Composer-pytorch/models/v1-5-pruned.ckpt #v2-1_512-nonema-pruned.ckpt # SD v2.1 checkpoint
     
 
     scheduler_config: # 10000 warmup steps
@@ -53,7 +53,7 @@ model:
       params:
         embed_dim: 4
         monitor: val/rec_loss
-        ckpt_path: /LatentComposer/models/first_stage_models/kl-f8/model.ckpt
+        ckpt_path: /Latent-Composer-pytorch/models/first_stage_models/kl-f8/model.ckpt
         ddconfig:
           double_z: true
           z_channels: 4
