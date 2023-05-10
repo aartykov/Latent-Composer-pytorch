@@ -33,17 +33,9 @@ $ CUDA_VISIBLE_DEVICES=0 python main.py config/composer.yaml -t --gpus 0,
 
 
 ## Implementation Notes
-I implemented the DDIM function(eq. 3 in the paper) as below. Since this part is not clear to me, I am not totally sure, if this is the right implementation or not. So I would appreaciate if someone give a hint for this point.
 
 ```python
-def p_sample_ddim(self, x, c, t, index, repeat_noise=False, use_original_steps=False, quantize_denoised=False,
-                      temperature=1., noise_dropout=0., score_corrector=None, corrector_kwargs=None,
-                      guidance_scale=1., unconditional_conditioning=None,
-                      dynamic_threshold=None):
-b, *_, device = *x.shape, x.device
-model_c1, model_c2 = self.model.apply_model(x, t, c).chunk(2)
-model_output = model_c1 + guidance_scale * (model_c2 - model_c1) 
-...
+
 ```
 
 ## Citations
